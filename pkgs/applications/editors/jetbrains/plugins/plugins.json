@@ -40,6 +40,15 @@
       },
       "name": "python"
     },
+    "6610": {
+      "compatible": [
+        "idea-ultimate"
+      ],
+      "builds": {
+        "233.14808.21": "https://plugins.jetbrains.com/files/6610/502570/php-impl-233.14808.21.zip"
+      },
+      "name": "php"
+    },
     "6954": {
       "compatible": [
         "idea-community",
@@ -482,6 +491,7 @@
     "https://plugins.jetbrains.com/files/22407/498174/intellij-rust-233.24015.155.zip": "sha256-oFg2xlR3gB1DpmhqHlugSjnrBDgAHlwvroqwAHiUAzI=",
     "https://plugins.jetbrains.com/files/631/502576/python-233.14808.21.zip": "sha256-1YN+brLdFOgcSQwLzafrjbIZ4NWBllaKulLCJ6MfdGI=",
     "https://plugins.jetbrains.com/files/6981/487357/ini-233.14475.38.zip": "sha256-++4e6qSYfqoP3/M69xyNaNmkhyeX3h8dK9cJabeB5cY=",
+    "https://plugins.jetbrains.com/files/6610/502570/php-impl-233.14808.21.zip": "sha256-LTi/DRzPuoSB3JdWASTPQFLrjhAqBni1YxWfEgzEN7U=",
     "https://plugins.jetbrains.com/files/6981/502555/ini-233.14808.20.zip": "sha256-8uDtfKkWfYr2qTD4Etb/zne1IXiiVLKQGJHKIVtp5cI=",
     "https://plugins.jetbrains.com/files/7219/497847/Symfony_Plugin-2023.1.265.zip": "sha256-lAAu2NamhKjGcVTu5cBlwSX8UP8bkKf9S++CW6xzvkk=",
     "https://plugins.jetbrains.com/files/7320/346181/PHP_Annotations-9.4.0.zip": "sha256-hT5K4w4lhvNwDzDMDSvsIDGj9lyaRqglfOhlbNdqpWs=",
