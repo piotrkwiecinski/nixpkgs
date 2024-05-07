@@ -4,7 +4,7 @@
 , php
 }:
 
-php.buildComposerProject (finalAttrs: {
+php.buildComposerProject2 (finalAttrs: {
   pname = "phpunit";
   version = "11.1.3";
 
@@ -15,7 +15,7 @@ php.buildComposerProject (finalAttrs: {
     hash = "sha256-Wq2k44WpUhDhSyIx8ofn/jUR7FS3zn2CCe4OiFKHXEA=";
   };
 
-  vendorHash = "sha256-kjMJCrMG08AXX662GAR5+V6w1+WOv8F9r6ONIOowP8Q=";
+  vendorHash = "sha256-XG+dcEM4BT9RFqZw8JiCeA+beyXzHKtL2MHCeKisCaM=";
 
   passthru.updateScript = nix-update-script { };
 
