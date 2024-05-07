@@ -12,7 +12,7 @@
   makeBinaryWrapper,
 }:
 
-php.buildComposerProject (finalAttrs: {
+php.buildComposerProject2 (finalAttrs: {
   # Hash used by ../../../build-support/php/pkgs/composer-phar.nix to
   # use together with the version from this package to keep the
   # bootstrap phar file up-to-date together with the end user composer
@@ -50,7 +50,7 @@ php.buildComposerProject (finalAttrs: {
       }
   '';
 
-  vendorHash = "sha256-dNNV9fTyGyRoGeDV/vBjn0aMgkaUMsrKQv5AOoiYokQ=";
+  vendorHash = "sha256-ZGP3Pev0AyfMfRIZirIZszRq03roJtrWzTder/51nSM=";
 
   meta = {
     changelog = "https://github.com/composer/composer/releases/tag/${finalAttrs.version}";
