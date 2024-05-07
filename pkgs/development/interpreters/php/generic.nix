@@ -164,7 +164,7 @@ let
                 nixos = lib.recurseIntoAttrs nixosTests."php${lib.strings.replaceStrings [ "." ] [ "" ] (lib.versions.majorMinor php.version)}";
                 package = tests.php;
               };
-              inherit (php-packages) extensions buildPecl mkComposerRepository buildComposerProject composerHooks mkExtension;
+              inherit (php-packages) extensions buildPecl mkComposerRepository mkComposerRepository2 buildComposerProject buildComposerProject2 composerHooks composerHooks2 mkExtension;
               packages = php-packages.tools;
               meta = php.meta // {
                 outputsToInstall = [ "out" ];

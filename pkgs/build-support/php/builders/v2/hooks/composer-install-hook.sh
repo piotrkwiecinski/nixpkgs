@@ -19,17 +19,19 @@ composerInstallConfigureHook() {
         exit 1
     fi
 
-    if [[ -e "$composerLock" ]]; then
-        cp "$composerLock" composer.lock
-    fi
+    cp "${composerRepository}/composer.lock" composer.lock
+    cp "${composerRepository}/composer.json" composer.json
 
     if [[ ! -f "composer.lock" ]]; then
         setComposeRootVersion
 
         composer \
+            --apcu-autoloader \
+            --apcu-autoloader-prefix="$(jq -r -c 'try ."content-hash"' < composer.lock)" \
             --no-install \
             --no-interaction \
             --no-progress \
+            --optimize-autoloader \
             ${composerNoDev:+--no-dev} \
             ${composerNoPlugins:+--no-plugins} \
             ${composerNoScripts:+--no-scripts} \
@@ -79,12 +81,6 @@ composerInstallConfigureHook() {
 composerInstallBuildHook() {
     echo "Executing composerInstallBuildHook"
 
-    setComposeRootVersion
-
-    # Since this file cannot be generated in the composer-repository-hook.sh
-    # because the file contains hardcoded nix store paths, we generate it here.
-    composer-local-repo-plugin --no-ansi build-local-repo-lock -m "${composerRepository}" .
-
     echo "Finished composerInstallBuildHook"
 }
 
@@ -101,15 +97,7 @@ composerInstallInstallHook() {
 
     setComposeRootVersion
 
-    # Finally, run `composer install` to install the dependencies and generate
-    # the autoloader.
-    composer \
-      --no-interaction \
-      --no-progress \
-      ${composerNoDev:+--no-dev} \
-      ${composerNoPlugins:+--no-plugins} \
-      ${composerNoScripts:+--no-scripts} \
-      install
+    cp -ar ${composerRepository}/* .
 
     # Copy the relevant files only in the store.
     mkdir -p "$out"/share/php/"${pname}"

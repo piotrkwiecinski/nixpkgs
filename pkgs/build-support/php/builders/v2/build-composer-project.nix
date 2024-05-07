@@ -1,5 +1,4 @@
 {
-  callPackage,
   stdenvNoCC,
   lib,
   php,
@@ -12,7 +11,6 @@ let
     let
       phpDrv = finalAttrs.php or php;
       composer = finalAttrs.composer or phpDrv.packages.composer;
-      composer-local-repo-plugin = callPackage ../../pkgs/composer-local-repo-plugin.nix { };
     in
     {
       composerLock = previousAttrs.composerLock or null;
@@ -23,9 +21,8 @@ let
 
       nativeBuildInputs = (previousAttrs.nativeBuildInputs or [ ]) ++ [
         composer
-        composer-local-repo-plugin
         phpDrv
-        phpDrv.composerHooks.composerInstallHook
+        phpDrv.composerHooks2.composerInstallHook
       ];
 
       buildInputs = (previousAttrs.buildInputs or [ ]) ++ [ phpDrv ];
@@ -72,8 +69,8 @@ let
         '';
 
       composerRepository =
-        previousAttrs.composerRepository or (phpDrv.mkComposerRepository {
-          inherit composer composer-local-repo-plugin;
+        previousAttrs.composerRepository or (phpDrv.mkComposerRepository2 {
+          inherit composer;
           inherit (finalAttrs)
             patches
             pname

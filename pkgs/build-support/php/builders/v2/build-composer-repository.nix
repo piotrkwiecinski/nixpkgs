@@ -1,8 +1,8 @@
 {
-  callPackage,
   stdenvNoCC,
   lib,
   php,
+  nix-update-script,
 }:
 
 let
@@ -24,7 +24,6 @@ let
     let
       phpDrv = finalAttrs.php or php;
       composer = finalAttrs.composer or phpDrv.packages.composer;
-      composer-local-repo-plugin = callPackage ../../pkgs/composer-local-repo-plugin.nix { };
     in
     assert (lib.assertMsg (previousAttrs ? src) "mkComposerRepository expects src argument.");
     assert (
@@ -32,19 +31,6 @@ let
     );
     assert (lib.assertMsg (previousAttrs ? version) "mkComposerRepository expects version argument.");
     assert (lib.assertMsg (previousAttrs ? pname) "mkComposerRepository expects pname argument.");
-    assert (
-      lib.assertMsg (previousAttrs ? composerNoDev) "mkComposerRepository expects composerNoDev argument."
-    );
-    assert (
-      lib.assertMsg (
-        previousAttrs ? composerNoPlugins
-      ) "mkComposerRepository expects composerNoPlugins argument."
-    );
-    assert (
-      lib.assertMsg (
-        previousAttrs ? composerNoScripts
-      ) "mkComposerRepository expects composerNoScripts argument."
-    );
     {
       composerNoDev = previousAttrs.composerNoDev or true;
       composerNoPlugins = previousAttrs.composerNoPlugins or true;
@@ -58,9 +44,8 @@ let
 
       nativeBuildInputs = (previousAttrs.nativeBuildInputs or [ ]) ++ [
         composer
-        composer-local-repo-plugin
         phpDrv
-        phpDrv.composerHooks.composerRepositoryHook
+        phpDrv.composerHooks2.composerRepositoryHook
       ];
 
       buildInputs = previousAttrs.buildInputs or [ ];
@@ -111,6 +96,8 @@ let
         COMPOSER_HTACCESS_PROTECT = "0";
         COMPOSER_DISABLE_NETWORK = "0";
       };
+
+      passthru.updateScript = previousAttrs.passthru.updateScript or (nix-update-script { });
 
       outputHashMode = "recursive";
       outputHashAlgo =

@@ -59,6 +59,11 @@ in {
 
   inherit (builders.v1) buildComposerProject composerHooks mkComposerRepository;
 
+  # Next version of the builder
+  buildComposerProject2 = builders.v2.buildComposerProject;
+  composerHooks2 = builders.v2.composerHooks;
+  mkComposerRepository2 = builders.v2.mkComposerRepository;
+
   # Wrap mkDerivation to prepend pname with "php-" to make names consistent
   # with how buildPecl does it and make the file easier to overview.
   mkDerivation = origArgs:

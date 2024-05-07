@@ -23,9 +23,12 @@ composerRepositoryConfigureHook() {
         setComposeRootVersion
 
         composer \
+            --apcu-autoloader \
+            --apcu-autoloader-prefix="$(jq -r -c 'try ."content-hash"' < composer.lock)" \
             --no-install \
             --no-interaction \
             --no-progress \
+            --optimize-autoloader \
             ${composerNoDev:+--no-dev} \
             ${composerNoPlugins:+--no-plugins} \
             ${composerNoScripts:+--no-scripts} \
@@ -50,20 +53,26 @@ composerRepositoryConfigureHook() {
         exit 1
     fi
 
+    chmod +w composer.{json,lock}
+
     echo "Finished composerRepositoryConfigureHook"
 }
 
 composerRepositoryBuildHook() {
     echo "Executing composerRepositoryBuildHook"
 
-    mkdir -p repository
-
     setComposeRootVersion
 
-    # Build the local composer repository
-    # The command 'build-local-repo' is provided by the Composer plugin
-    # nix-community/composer-local-repo-plugin.
-    composer-local-repo-plugin --no-ansi build-local-repo-lock ${composerNoDev:+--no-dev} -r repository
+    composer \
+        --apcu-autoloader \
+        --apcu-autoloader-prefix="$(jq -r -c 'try ."content-hash"' < composer.lock)" \
+        --no-interaction \
+        --no-progress \
+        --optimize-autoloader \
+        ${composerNoDev:+--no-dev} \
+        ${composerNoPlugins:+--no-plugins} \
+        ${composerNoScripts:+--no-scripts} \
+        install
 
     echo "Finished composerRepositoryBuildHook"
 }
@@ -81,11 +90,7 @@ composerRepositoryInstallHook() {
 
     mkdir -p $out
 
-    cp -ar repository/. $out/
-
-    # Copy the composer.lock files to the output directory, to be able to validate consistency with
-    # the src composer.lock file where this fixed-output derivation is used
-    cp composer.lock $out/
+    cp -ar composer.{json,lock} $(composer config vendor-dir) $out/
 
     echo "Finished composerRepositoryInstallHook"
 }
